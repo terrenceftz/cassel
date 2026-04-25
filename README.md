@@ -1,6 +1,3 @@
-以下是为您整理的 **Cassel** 项目介绍，采用 Markdown 格式编写，您可以直接复制到项目的 `README.md` 中或用于其他展示场景：
-
----
 
 # Cassel 项目介绍
 
@@ -64,5 +61,6 @@
 项目支持一键部署至 **Vercel**、**Netlify** 或 **GitHub Pages**。由于是静态站点架构，您可以轻松地将其托管在任何支持前端部署的平台。
 
 ---
+
 
 **项目地址**: [terrenceftz/cassel](https://github.com/terrenceftz/cassel)
