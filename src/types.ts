@@ -2,7 +2,8 @@ export enum BloodlineRank {
   S = "S",
   A = "A",
   B = "B",
-  C = "C"
+  C = "C",
+  F = "F"
 }
 
 export interface YanLing {

@@ -60,10 +60,48 @@ export const QUESTIONS: Question[] = [
       { label: "操控精神的幕后主使", value: "c", weights: { "dream_tapir": 3, "void_mirror": 2 } },
       { label: "焚毁一切的狂暴审判", value: "d", weights: { "kings_authority": 2, "grim_reaper": 2 } },
     ]
+  },
+  {
+    id: 7,
+    text: "面对未知的黑暗，你下意识的反应是？",
+    options: [
+      { label: "点燃火焰照亮前路", value: "a", weights: { "kings_authority": 2, "vampire": 1 } },
+      { label: "融入阴影静待时机", value: "b", weights: { "void_mirror": 3, "snake": 1 } },
+      { label: "闭上眼，用心跳感知全局", value: "c", weights: { "scythe": 3, "snake": 2 } },
+      { label: "感到恐惧，转身寻找警察或普通出口", value: "d", weights: { "muggle": 10 } },
+    ]
+  },
+  {
+    id: 8,
+    text: "当你发现自己拥有超能力时，第一反应是？",
+    options: [
+      { label: "这才是真正的我", value: "a", weights: { "time_zero": 2, "kings_authority": 2 } },
+      { label: "变强，然后复仇", value: "b", weights: { "grim_reaper": 2, "scythe": 2 } },
+      { label: "我只是想安静地过平凡的生活", value: "c", weights: { "eternal_night": 2, "immortal": 2 } },
+      { label: "天哪，我不是怪物吧？我要去精神病院检查", value: "d", weights: { "muggle": 10 } },
+    ]
+  },
+  {
+    id: 9,
+    text: "在昂热校长的下午茶时间，你会选择？",
+    options: [
+      { label: "关于屠龙的历史秘辛", value: "a", weights: { "time_zero": 2, "blue_copper": 1 } },
+      { label: "最好的雪茄与美酒", value: "b", weights: { "wind_kings_breath": 2, "vampire": 1 } },
+      { label: "沉默地听他讲往事", value: "c", weights: { "grim_reaper": 1, "void_mirror": 1 } },
+      { label: "赶紧喝完这杯奇怪的茶，然后去超市兼职", value: "d", weights: { "muggle": 10 } },
+    ]
   }
 ];
 
 export const YAN_LINGS: YanLing[] = [
+  {
+    id: "muggle",
+    name: "无（麻瓜）",
+    rank: BloodlineRank.F,
+    description: "完全没有龙类血统。体内没有龙类基因的共鸣，无法感知元素的波动。",
+    effect: "平淡却安稳的一生。",
+    personality: "你是个纯粹的人类，不属于这个残酷的世界。但这或许是你最大的幸运。"
+  },
   {
     id: "time_zero",
     name: "时零",

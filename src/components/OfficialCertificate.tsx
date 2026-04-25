@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from "motion/react";
 import html2canvas from 'html2canvas';
-import { YanLing, BloodlineRank } from "../types";
-import { Download, TreePine, X } from "lucide-react";
+import { YanLing, BloodlineRank } from "../types.ts";
+import { Download, TreePine, X, Loader2 } from "lucide-react";
 
 interface OfficialCertificateProps {
   nickname: string;
@@ -12,23 +12,35 @@ interface OfficialCertificateProps {
 
 export default function OfficialCertificate({ nickname, yanLing, onClose }: OfficialCertificateProps) {
   const certificateRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const downloadImage = async () => {
-    if (!certificateRef.current) return;
+    if (!certificateRef.current || isGenerating) return;
     
+    setIsGenerating(true);
     try {
+      // Wait for fonts to be ready
+      await document.fonts.ready;
+      
       const canvas = await html2canvas(certificateRef.current, {
-        backgroundColor: '#0a0a0c',
-        scale: 2, // Higher quality
+        backgroundColor: '#f5f2ed',
+        scale: 2,
         useCORS: true,
+        logging: false,
+        allowTaint: false,
       });
       
       const link = document.createElement('a');
       link.download = `Cassel_Admission_${nickname}.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.href = canvas.toDataURL('image/png', 1.0);
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error('Error generating image:', err);
+      alert('生成图片失败，请尝试截图保存。');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -50,9 +62,11 @@ export default function OfficialCertificate({ nickname, yanLing, onClose }: Offi
         <div className="absolute -top-12 right-0 flex gap-4">
           <button
             onClick={downloadImage}
-            className="flex items-center gap-2 px-4 py-2 bg-cassel-gold text-black font-bold text-xs uppercase rounded cursor-pointer hover:bg-white transition-colors"
+            disabled={isGenerating}
+            className="flex items-center gap-2 px-4 py-2 bg-cassel-gold text-black font-bold text-xs uppercase rounded cursor-pointer hover:bg-white transition-colors disabled:opacity-50"
           >
-            <Download size={16} /> 保存为图片 / Save Image
+            {isGenerating ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+            {isGenerating ? '生成中...' : '保存为图片 / Save Image'}
           </button>
           <button
             onClick={onClose}
@@ -67,10 +81,14 @@ export default function OfficialCertificate({ nickname, yanLing, onClose }: Offi
           ref={certificateRef}
           className="bg-[#f5f2ed] text-amber-950 p-12 md:p-20 shadow-2xl relative overflow-hidden border-[16px] border-double border-amber-900/20 w-full max-w-[800px] aspect-[1/1.414]"
           style={{ 
-            backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper-fibers.png")',
-            fontFamily: '"Noto Serif SC", serif'
+            fontFamily: '"Noto Serif SC", serif',
+            background: 'radial-gradient(circle at center, #fdfbf7 0%, #f5f2ed 100%)',
           }}
         >
+          {/* Internal Texture Overlay (Inlined CSS Pattern) */}
+          <div className="absolute inset-0 opacity-40 pointer-events-none" 
+               style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\' opacity=\'0.1\'/%3E%3C/svg%3E")' }} 
+          />
           {/* Subtle logo background */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
             <TreePine size={400} />

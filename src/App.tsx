@@ -11,7 +11,7 @@ import CasselLogo from './components/CasselLogo.tsx';
 import AdmissionLetter from './components/AdmissionLetter.tsx';
 import { ChevronRight, Sparkles, Wand2, RefreshCw } from 'lucide-react';
 
-type Step = 'intro' | 'name' | 'quiz' | 'processing' | 'result';
+type Step = 'intro' | 'name' | 'quiz' | 'processing' | 'result' | 'muggle_warning';
 
 export default function App() {
   const [step, setStep] = useState<Step>('intro');
@@ -64,7 +64,11 @@ export default function App() {
     
     setTimeout(() => {
       setYanLing(result);
-      setStep('result');
+      if (result.id === 'muggle') {
+        setStep('muggle_warning');
+      } else {
+        setStep('result');
+      }
     }, 2800);
   };
 
@@ -74,7 +78,20 @@ export default function App() {
     setCurrentQuestionIndex(0);
     setAnswers({});
     setYanLing(null);
+    setMuggleCountdown(5);
   };
+
+  const [muggleCountdown, setMuggleCountdown] = useState(5);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (step === 'muggle_warning' && muggleCountdown > 0) {
+      timer = setTimeout(() => setMuggleCountdown(prev => prev - 1), 1000);
+    } else if (step === 'muggle_warning' && muggleCountdown === 0) {
+      restart();
+    }
+    return () => clearTimeout(timer);
+  }, [step, muggleCountdown]);
 
   return (
     <div className="min-h-screen bg-cassel-dark flex items-center justify-center p-4 selection:bg-cassel-gold selection:text-black overflow-hidden relative">
@@ -89,10 +106,11 @@ export default function App() {
       <div className="fixed bottom-10 right-10 h-24 w-px bg-cassel-gold/20" />
 
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-full max-w-[900px] h-[680px] bg-cassel-panel border border-cassel-border shadow-2xl flex flex-col overflow-hidden"
+        className="relative w-full max-w-[1100px] h-[780px] bg-cassel-panel border border-cassel-border shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
       >
+        <div className="scan-line" />
         {/* Frame Corners */}
         <div className="corner-top-left" />
         <div className="corner-top-right" />
@@ -100,53 +118,61 @@ export default function App() {
         <div className="corner-bottom-right" />
 
         {/* Header Branding */}
-        <header className="h-20 border-b border-cassel-border flex items-center justify-between px-8 bg-black/40">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 border border-cassel-gold rotate-45 flex items-center justify-center overflow-hidden bg-zinc-900">
-              <div className="-rotate-45 text-cassel-gold font-bold text-lg">C</div>
+        <header className="h-24 border-b border-cassel-border flex items-center justify-between px-10 bg-black/60 backdrop-blur-xl">
+          <div className="flex items-center gap-6">
+            <div className="w-14 h-14 border border-cassel-gold/60 rotate-45 flex items-center justify-center overflow-hidden bg-zinc-900/80 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+              <div className="-rotate-45 text-cassel-gold font-display font-bold text-2xl">C</div>
             </div>
             <div>
-              <h1 className="text-[10px] tracking-[0.4em] text-cassel-gold uppercase font-serif">Cassell College</h1>
-              <p className="text-sm tracking-widest font-chinese opacity-80 decoration-cassel-gold uppercase">卡塞尔学院 · 龙族基因档案</p>
+              <h1 className="text-[12px] tracking-[0.6em] text-cassel-gold uppercase font-display">Cassell Academy</h1>
+              <p className="text-lg tracking-[0.3em] font-chinese opacity-90 font-bold">卡塞尔学院 · 龙族基因档案</p>
             </div>
           </div>
           <div className="text-right font-mono">
-            <p className="text-[9px] opacity-40 uppercase">档案级别: 绝密 (TOP SECRET)</p>
-            <p className="text-cassel-red text-xs font-bold uppercase tracking-tighter">
-              {step === 'result' ? `血统代码: ${yanLing?.rank}-LEVEL` : '血统代码: 扫描中...'}
+            <p className="text-[10px] opacity-40 uppercase tracking-widest">Classification: TOP SECRET // V-VI</p>
+            <p className={`text-sm font-bold uppercase tracking-widest ${step === 'result' ? 'text-cassel-gold' : 'text-cassel-red animate-pulse'}`}>
+              {step === 'result' ? `血统级别: ${yanLing?.rank}-LEVEL` : '血统代码: 解析中...'}
             </p>
           </div>
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-hidden relative">
+        <main className="flex-1 overflow-hidden relative bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_100%)]">
           <AnimatePresence mode="wait">
             {step === 'intro' && (
               <motion.div
                 key="intro"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="h-full flex flex-col items-center justify-center p-8 space-y-8"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, filter: "blur(20px)" }}
+                className="h-full flex flex-col items-center justify-center p-12 space-y-12"
               >
                 <div className="space-y-4 text-center">
-                  <h2 className="text-6xl md:text-8xl font-display text-gold-gradient tracking-widest font-bold">
+                  <motion.h2 
+                    initial={{ letterSpacing: "1em", opacity: 0 }}
+                    animate={{ letterSpacing: "0.2em", opacity: 1 }}
+                    transition={{ duration: 2, ease: "easeOut" }}
+                    className="text-7xl md:text-9xl font-display text-gold-gradient font-bold"
+                  >
                     CASSEL
-                  </h2>
-                  <p className="text-xl font-serif italic text-cassel-gold/60 tracking-tighter uppercase">
-                    Enrollment & Bloodline Assessment
+                  </motion.h2>
+                  <p className="text-2xl font-serif italic text-cassel-gold/40 tracking-[0.4em] uppercase">
+                    World Tree Enrollment Agent
                   </p>
                 </div>
-                <div className="max-w-md text-center space-y-6">
-                  <p className="text-cassel-gray/50 leading-relaxed font-chinese text-sm">
-                    欢迎来到卡塞尔学院。龙的权能沉睡于你的血液中，屠龙的誓言刻印在星空的倒影里。请准备好面对真实的自己。
+                <div className="max-w-2xl text-center space-y-10">
+                  <p className="text-cassel-gray/60 leading-relaxed font-chinese text-lg italic px-8">
+                    “我们是屠龙者，在这个注定要倾覆的世界里，握紧最后的余晖。”
                   </p>
                   <button
                     id="btn-start-exam"
                     onClick={handleStart}
-                    className="group px-10 py-4 bg-cassel-gold text-black font-bold tracking-widest text-xs uppercase hover:bg-white transition-colors duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] cursor-pointer"
+                    className="group relative px-12 py-5 bg-transparent overflow-hidden border border-cassel-gold/40 transition-all duration-500 hover:border-cassel-gold cursor-pointer"
                   >
-                    开始血统鉴定 / Start Assessment
+                    <div className="absolute inset-0 bg-cassel-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                    <span className="relative z-10 text-cassel-gold group-hover:text-black font-bold tracking-[0.4em] text-sm uppercase transition-colors">
+                      评估血统阶级 / Assess Rank
+                    </span>
                   </button>
                 </div>
               </motion.div>
@@ -196,33 +222,33 @@ export default function App() {
                 exit={{ opacity: 0, x: -20 }}
                 className="h-full p-12 flex flex-col justify-center max-w-3xl mx-auto"
               >
-                <div className="flex justify-between items-center mb-12 border-b border-cassel-border pb-4">
-                   <div className="flex items-center gap-4">
-                     <span className="text-xs font-mono text-cassel-gold/40">进度评估: [{currentQuestionIndex + 1}/{QUESTIONS.length}]</span>
-                     <div className="w-48 h-1 bg-cassel-border relative">
+                <div className="flex justify-between items-center mb-16 border-b border-cassel-gold/10 pb-6">
+                   <div className="flex items-center gap-6">
+                     <span className="text-xs font-mono text-cassel-gold/40 tracking-widest uppercase">Progress: [{currentQuestionIndex + 1}/{QUESTIONS.length}]</span>
+                     <div className="w-64 h-[2px] bg-cassel-border relative">
                        <motion.div 
-                         className="absolute inset-0 bg-cassel-gold origin-left"
+                         className="absolute inset-0 bg-cassel-gold origin-left shadow-[0_0_10px_rgba(212,175,55,0.5)]"
                          initial={{ scaleX: 0 }}
                          animate={{ scaleX: (currentQuestionIndex + 1) / QUESTIONS.length }}
                        />
                      </div>
                    </div>
-                   <span className="text-xs font-mono text-cassel-gold tracking-widest uppercase">Question_{currentQuestionIndex + 1}</span>
+                   <span className="text-lg font-display text-cassel-gold tracking-[0.5em] uppercase">Phase_{currentQuestionIndex + 1}</span>
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-bold mb-12 leading-relaxed">
+                <h3 className="text-3xl md:text-4xl font-bold mb-16 leading-tight tracking-tight">
                   {QUESTIONS[currentQuestionIndex].text}
                 </h3>
 
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {QUESTIONS[currentQuestionIndex].options.map((option, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleAnswer(option.weights)}
-                      className="text-left p-6 border border-cassel-border bg-black/20 hover:border-cassel-gold/60 hover:bg-cassel-gold/5 transition-all group flex items-center justify-between cursor-pointer"
+                      className="text-left p-8 border border-white/5 bg-white/[0.02] hover:border-cassel-gold/40 hover:bg-cassel-gold/[0.03] transition-all duration-300 group relative overflow-hidden cursor-pointer"
                     >
-                      <span className="text-base text-cassel-gray/70 group-hover:text-cassel-gold transition-colors">{option.label}</span>
-                      <ChevronRight size={16} className="text-cassel-gold opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                      <div className="absolute left-0 top-0 w-[2px] h-0 bg-cassel-gold group-hover:h-full transition-all duration-500" />
+                      <span className="text-lg text-cassel-gray/60 group-hover:text-cassel-gray transition-colors leading-relaxed">{option.label}</span>
                     </button>
                   ))}
                 </div>
@@ -249,6 +275,34 @@ export default function App() {
                 <div className="text-center space-y-2">
                   <p className="text-xs tracking-[0.6em] text-cassel-gold uppercase animate-pulse">正在分析基因序列 / Analyzing Gene Sequence</p>
                   <p className="font-mono text-[10px] text-white/20 uppercase tracking-widest">与“世界树”主机同步中... Syncing with Mainframe</p>
+                </div>
+              </motion.div>
+            )}
+
+            {step === 'muggle_warning' && (
+              <motion.div
+                key="muggle"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="h-full flex flex-col items-center justify-center space-y-8 p-12 text-center"
+              >
+                <div className="w-24 h-24 border-4 border-cassel-red rounded-full flex items-center justify-center animate-pulse">
+                  <span className="text-4xl text-cassel-red font-bold">!</span>
+                </div>
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold text-cassel-red uppercase tracking-widest">警告：非混血种目标</h2>
+                  <p className="text-xl text-white/80">
+                    检测到你的血统比例为 <span className="text-cassel-red font-bold">0%</span>。
+                  </p>
+                  <p className="text-lg text-cassel-gray">
+                    你是个麻瓜，不属于卡塞尔学院。为了保密协议，诺玛将在五秒后消除你的记忆。
+                  </p>
+                </div>
+                <div className="text-6xl font-mono text-cassel-red">
+                  {muggleCountdown}
+                </div>
+                <div className="text-[10px] text-white/20 font-mono tracking-widest">
+                  MEMORY WIPE IN PROGRESS... NORMA EXECUTING PROTOCOL 7-B
                 </div>
               </motion.div>
             )}
