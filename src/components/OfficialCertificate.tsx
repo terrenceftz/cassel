@@ -79,7 +79,7 @@ export default function OfficialCertificate({ nickname, yanLing, onClose }: Offi
         {/* Certificate Area */}
         <div 
           ref={certificateRef}
-          className="bg-[#f5f2ed] text-amber-950 p-12 md:p-20 shadow-2xl relative overflow-hidden border-[16px] border-double border-amber-900/20 w-full max-w-[800px] aspect-[1/1.414]"
+          className="bg-[#f5f2ed] text-amber-950 p-6 sm:p-12 md:p-20 shadow-2xl relative overflow-hidden border-[8px] sm:border-[16px] border-double border-amber-900/20 w-fit h-auto flex flex-col justify-center min-w-[320px] max-w-[95vw] md:max-w-[800px] aspect-auto md:aspect-[1/1.414]"
           style={{ 
             fontFamily: '"Noto Serif SC", serif',
             background: 'radial-gradient(circle at center, #fdfbf7 0%, #f5f2ed 100%)',
@@ -91,35 +91,35 @@ export default function OfficialCertificate({ nickname, yanLing, onClose }: Offi
           />
           {/* Subtle logo background */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
-            <TreePine size={400} />
+            <TreePine size={200} className="md:w-[400px]" />
           </div>
 
-          <div className="relative z-10 h-full flex flex-col justify-between">
+          <div className="relative z-10 flex flex-col justify-between space-y-6 md:space-y-0">
             {/* Header */}
-            <div className="text-center space-y-4">
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 border-2 border-amber-900 rounded-full flex items-center justify-center">
-                  <TreePine size={32} className="text-amber-900" />
+            <div className="text-center space-y-2 md:space-y-4">
+              <div className="flex justify-center mb-2 md:mb-4">
+                <div className="w-10 h-10 md:w-16 md:h-16 border-2 border-amber-900 rounded-full flex items-center justify-center">
+                  <TreePine size={24} className="text-amber-900 md:w-[32px]" />
                 </div>
               </div>
-              <h1 className="text-3xl md:text-5xl font-serif tracking-[0.2em] font-bold uppercase">
+              <h1 className="text-xl sm:text-2xl md:text-5xl font-serif tracking-[0.1em] md:tracking-[0.2em] font-bold uppercase">
                 Cassel Academy
               </h1>
               <div className="h-px bg-amber-900/30 w-full" />
-              <p className="text-sm tracking-[0.4em] uppercase opacity-60">
+              <p className="text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.4em] uppercase opacity-60">
                 Admission Certificate · 卡塞尔学院录取通知书
               </p>
             </div>
 
             {/* Body */}
-            <div className="space-y-10 py-12">
-              <p className="text-xl font-bold border-b border-amber-900/20 pb-2 inline-block">
+            <div className="space-y-4 md:space-y-10 py-4 md:py-12">
+              <p className="text-sm md:text-xl font-bold border-b border-amber-900/20 pb-1 md:pb-2 inline-block">
                 致 {nickname} 同学：
               </p>
               
-              <div className="space-y-6 text-lg leading-relaxed indent-8 text-justify">
+              <div className="space-y-3 md:space-y-6 text-xs sm:text-sm md:text-lg leading-relaxed indent-4 md:indent-8 text-left md:text-justify max-w-full overflow-hidden">
                 <p>
-                  在这个古老而又充满变革的时代，你的脉搏中跳动着被诅咒也同样被神眷顾的力量。通过诺玛（Norma）神经网络的深度扫描与血统评定，你体内的非凡基因已正式苏醒。
+                  在这个古老而又充满变革的时代，你的脉搏中跳动着被诅咒也同样被神眷顾的力量。通过诺玛神经网络的深度扫描与血统评定，你体内的非凡基因已正式苏醒。
                 </p>
                 <p>
                   现正式确认你的血统评级为 <span className="font-bold text-red-800 underline decoration-double">{yanLing.rank} 级</span>，已觉醒言灵为 <span className="font-bold text-amber-900">“{yanLing.name}”</span>。
@@ -134,25 +134,25 @@ export default function OfficialCertificate({ nickname, yanLing, onClose }: Offi
             </div>
 
             {/* Footer */}
-            <div className="flex justify-between items-end">
-              <div className="space-y-2 text-xs opacity-60 font-mono">
+            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-6 sm:gap-0 font-serif">
+              <div className="space-y-1 text-[8px] md:text-xs opacity-60 font-mono text-center sm:text-left">
                 <p>Ref No: CASSEL-{yanLing.id.toUpperCase()}-{Math.floor(Math.random()*10000)}</p>
                 <p>Location: Secret Base, Chicago</p>
                 <p>Date: {currentDate}</p>
               </div>
               
-              <div className="text-right flex flex-col items-end">
+              <div className="text-right flex flex-row sm:flex-col items-center sm:items-end gap-4 sm:gap-0">
                 {/* Wax Seal */}
-                <div className="mb-4 mr-4 w-24 h-24 bg-red-800 rounded-full flex items-center justify-center shadow-lg transform rotate-[-15deg] border-4 border-red-950/20 relative">
+                <div className="w-16 h-16 md:w-24 md:h-24 bg-red-800 rounded-full flex items-center justify-center shadow-lg transform rotate-[-15deg] border-4 border-red-950/20 relative shrink-0">
                   <div className="absolute inset-0 bg-red-900 blur-sm opacity-50" />
-                  <TreePine className="text-red-200/50" size={40} />
-                  <span className="absolute text-[8px] font-bold text-red-200 uppercase tracking-widest bottom-4">Secretum</span>
+                  <TreePine className="text-red-200/50" size={32} />
+                  <span className="absolute text-[6px] md:text-[8px] font-bold text-red-200 uppercase tracking-widest bottom-2 md:bottom-4">Secretum</span>
                 </div>
-                <div className="space-y-1">
-                  <p className="font-serif italic text-lg text-amber-900 opacity-60">Principal</p>
-                  <p className="font-serif text-3xl font-bold italic tracking-tighter text-black">Anjou</p>
-                  <div className="h-0.5 w-32 bg-amber-950 mt-1" />
-                  <p className="text-[10px] uppercase tracking-widest opacity-40 mt-1">希尔伯特 · 让 · 昂热</p>
+                <div className="space-y-0.5 md:space-y-1 mt-0 sm:mt-2">
+                  <p className="font-serif italic text-xs md:text-lg text-amber-900 opacity-60">Principal</p>
+                  <p className="font-serif text-xl md:text-3xl font-bold italic tracking-tighter text-black">Anjou</p>
+                  <div className="h-px md:h-0.5 w-full md:w-32 bg-amber-950 mt-1" />
+                  <p className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40 mt-1">希尔伯特 · 让 · 昂热</p>
                 </div>
               </div>
             </div>

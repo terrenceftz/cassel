@@ -108,7 +108,7 @@ export default function App() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-full max-w-[1100px] h-[780px] bg-cassel-panel border border-cassel-border shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
+        className="relative w-full max-w-[1100px] md:h-[780px] min-h-[85vh] h-auto bg-cassel-panel border border-cassel-border shadow-[0_0_100px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
       >
         <div className="scan-line" />
         {/* Frame Corners */}
@@ -118,17 +118,17 @@ export default function App() {
         <div className="corner-bottom-right" />
 
         {/* Header Branding */}
-        <header className="h-24 border-b border-cassel-border flex items-center justify-between px-10 bg-black/60 backdrop-blur-xl">
-          <div className="flex items-center gap-6">
-            <div className="w-14 h-14 border border-cassel-gold/60 rotate-45 flex items-center justify-center overflow-hidden bg-zinc-900/80 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-              <div className="-rotate-45 text-cassel-gold font-display font-bold text-2xl">C</div>
+        <header className="h-20 md:h-24 border-b border-cassel-border flex items-center justify-between px-6 md:px-10 bg-black/60 backdrop-blur-xl shrink-0">
+          <div className="flex items-center gap-4 md:gap-6">
+            <div className="w-10 h-10 md:w-14 md:h-14 border border-cassel-gold/60 rotate-45 flex items-center justify-center overflow-hidden bg-zinc-900/80 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+              <div className="-rotate-45 text-cassel-gold font-display font-bold text-lg md:text-2xl">C</div>
             </div>
             <div>
-              <h1 className="text-[12px] tracking-[0.6em] text-cassel-gold uppercase font-display">Cassell Academy</h1>
-              <p className="text-lg tracking-[0.3em] font-chinese opacity-90 font-bold">卡塞尔学院 · 龙族基因档案</p>
+              <h1 className="text-[10px] md:text-[12px] tracking-[0.4em] md:tracking-[0.6em] text-cassel-gold uppercase font-display">Cassell Academy</h1>
+              <p className="text-sm md:text-lg tracking-widest font-chinese opacity-90 font-bold">卡塞尔学院 · 龙族基因档案</p>
             </div>
           </div>
-          <div className="text-right font-mono">
+          <div className="text-right font-mono hidden sm:block">
             <p className="text-[10px] opacity-40 uppercase tracking-widest">Classification: TOP SECRET // V-VI</p>
             <p className={`text-sm font-bold uppercase tracking-widest ${step === 'result' ? 'text-cassel-gold' : 'text-cassel-red animate-pulse'}`}>
               {step === 'result' ? `血统级别: ${yanLing?.rank}-LEVEL` : '血统代码: 解析中...'}
@@ -137,7 +137,7 @@ export default function App() {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-hidden relative bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_100%)]">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_100%)]">
           <AnimatePresence mode="wait">
             {step === 'intro' && (
               <motion.div
@@ -145,32 +145,32 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, filter: "blur(20px)" }}
-                className="h-full flex flex-col items-center justify-center p-12 space-y-12"
+                className="h-full flex flex-col items-center justify-center p-6 md:p-12 space-y-8 md:space-y-12 text-center"
               >
                 <div className="space-y-4 text-center">
                   <motion.h2 
                     initial={{ letterSpacing: "1em", opacity: 0 }}
                     animate={{ letterSpacing: "0.2em", opacity: 1 }}
                     transition={{ duration: 2, ease: "easeOut" }}
-                    className="text-7xl md:text-9xl font-display text-gold-gradient font-bold"
+                    className="text-5xl sm:text-7xl md:text-9xl font-display text-gold-gradient font-bold"
                   >
                     CASSEL
                   </motion.h2>
-                  <p className="text-2xl font-serif italic text-cassel-gold/40 tracking-[0.4em] uppercase">
+                  <p className="text-sm sm:text-xl md:text-2xl font-serif italic text-cassel-gold/40 tracking-[0.4em] uppercase">
                     World Tree Enrollment Agent
                   </p>
                 </div>
-                <div className="max-w-2xl text-center space-y-10">
-                  <p className="text-cassel-gray/60 leading-relaxed font-chinese text-lg italic px-8">
+                <div className="max-w-2xl text-center space-y-6 md:space-y-10">
+                  <p className="text-cassel-gray/60 leading-relaxed font-chinese text-sm sm:text-base md:text-lg italic px-4 md:px-8">
                     “我们是屠龙者，在这个注定要倾覆的世界里，握紧最后的余晖。”
                   </p>
                   <button
                     id="btn-start-exam"
                     onClick={handleStart}
-                    className="group relative px-12 py-5 bg-transparent overflow-hidden border border-cassel-gold/40 transition-all duration-500 hover:border-cassel-gold cursor-pointer"
+                    className="group relative px-8 md:px-12 py-4 md:py-5 bg-transparent overflow-hidden border border-cassel-gold/40 transition-all duration-500 hover:border-cassel-gold cursor-pointer"
                   >
                     <div className="absolute inset-0 bg-cassel-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                    <span className="relative z-10 text-cassel-gold group-hover:text-black font-bold tracking-[0.4em] text-sm uppercase transition-colors">
+                    <span className="relative z-10 text-cassel-gold group-hover:text-black font-bold tracking-[0.4em] text-xs sm:text-sm uppercase transition-colors">
                       评估血统阶级 / Assess Rank
                     </span>
                   </button>
@@ -220,12 +220,12 @@ export default function App() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="h-full p-12 flex flex-col justify-center max-w-3xl mx-auto"
+                className="h-full p-6 md:p-12 flex flex-col justify-center max-w-4xl mx-auto"
               >
-                <div className="flex justify-between items-center mb-16 border-b border-cassel-gold/10 pb-6">
-                   <div className="flex items-center gap-6">
-                     <span className="text-xs font-mono text-cassel-gold/40 tracking-widest uppercase">Progress: [{currentQuestionIndex + 1}/{QUESTIONS.length}]</span>
-                     <div className="w-64 h-[2px] bg-cassel-border relative">
+                <div className="flex justify-between items-center mb-8 md:mb-16 border-b border-cassel-gold/10 pb-4 md:pb-6">
+                   <div className="flex items-center gap-4 md:gap-6">
+                     <span className="text-[10px] md:text-xs font-mono text-cassel-gold/40 tracking-widest uppercase">Progress: [{currentQuestionIndex + 1}/{QUESTIONS.length}]</span>
+                     <div className="w-32 md:w-64 h-[1px] md:h-[2px] bg-cassel-border relative">
                        <motion.div 
                          className="absolute inset-0 bg-cassel-gold origin-left shadow-[0_0_10px_rgba(212,175,55,0.5)]"
                          initial={{ scaleX: 0 }}
@@ -233,22 +233,22 @@ export default function App() {
                        />
                      </div>
                    </div>
-                   <span className="text-lg font-display text-cassel-gold tracking-[0.5em] uppercase">Phase_{currentQuestionIndex + 1}</span>
+                   <span className="text-sm md:text-lg font-display text-cassel-gold tracking-[0.3em] md:tracking-[0.5em] uppercase">Ph_{currentQuestionIndex + 1}</span>
                 </div>
 
-                <h3 className="text-3xl md:text-4xl font-bold mb-16 leading-tight tracking-tight">
+                <h3 className="text-xl sm:text-2xl md:text-4xl font-bold mb-8 md:mb-16 leading-tight tracking-tight">
                   {QUESTIONS[currentQuestionIndex].text}
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pb-8 md:pb-0">
                   {QUESTIONS[currentQuestionIndex].options.map((option, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleAnswer(option.weights)}
-                      className="text-left p-8 border border-white/5 bg-white/[0.02] hover:border-cassel-gold/40 hover:bg-cassel-gold/[0.03] transition-all duration-300 group relative overflow-hidden cursor-pointer"
+                      className="text-left p-5 md:p-8 border border-white/5 bg-white/[0.02] hover:border-cassel-gold/40 hover:bg-cassel-gold/[0.03] transition-all duration-300 group relative overflow-hidden cursor-pointer"
                     >
                       <div className="absolute left-0 top-0 w-[2px] h-0 bg-cassel-gold group-hover:h-full transition-all duration-500" />
-                      <span className="text-lg text-cassel-gray/60 group-hover:text-cassel-gray transition-colors leading-relaxed">{option.label}</span>
+                      <span className="text-sm sm:text-base md:text-lg text-cassel-gray/60 group-hover:text-cassel-gray transition-colors leading-relaxed">{option.label}</span>
                     </button>
                   ))}
                 </div>
@@ -327,9 +327,10 @@ export default function App() {
         </main>
 
         {/* Footer Navigation */}
-        <footer className="h-10 px-8 flex items-center justify-between text-[9px] tracking-widest uppercase opacity-30 border-t border-cassel-border font-mono">
-          <span>终端状态: 已连接 (Active)</span>
-          <span>加密线路: CASSELL-NET-ALPHA-V</span>
+        <footer className="h-10 px-8 flex items-center justify-between text-[8px] sm:text-[9px] tracking-widest uppercase opacity-30 border-t border-cassel-border font-mono shrink-0">
+          <span className="hidden sm:inline">终端状态: 已连接 (Active)</span>
+          <span className="sm:hidden">Status: Active</span>
+          <span className="hidden md:inline">加密线路: CASSELL-NET-ALPHA-V</span>
           <span>日期: {new Date().toLocaleDateString()}</span>
         </footer>
       </motion.div>
